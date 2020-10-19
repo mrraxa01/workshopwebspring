@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mrraxa.course.entities.enums.OrderStatus;
 
 @Entity
 @Table(name = "tb_order")
@@ -26,6 +27,9 @@ public class Order implements Serializable{
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
 	
+	
+	private Integer orderStatus;
+	
 	//define na JPA relacao muitos para 1. muitas orders p/ 1 cliente 
 	@ManyToOne
 	//define qual vai ser a chave estrangeira no BD
@@ -34,10 +38,11 @@ public class Order implements Serializable{
 	
 	public Order() {}
 
-	public Order(Long id, Instant moment, User clients) {
+	public Order(Long id, Instant moment, OrderStatus orderStatus,User clients) {
 		super();
 		this.id = id;
 		this.moment = moment;
+		setOrderStatus(orderStatus);
 		this.clients = clients;
 	}
 
@@ -55,6 +60,15 @@ public class Order implements Serializable{
 
 	public void setMoment(Instant moment) {
 		this.moment = moment;
+	}
+	
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+	
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus.getCode();
+		
 	}
 
 	public User getClients() {
