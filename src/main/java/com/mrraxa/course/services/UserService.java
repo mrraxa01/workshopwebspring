@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mrraxa.course.entities.User;
 import com.mrraxa.course.repositories.UserRepository;
+import com.mrraxa.course.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -21,7 +22,9 @@ public class UserService {
 	
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
-		return obj.get();
+	//	return obj.get();
+		//usar o obj.orElseThrow se não tiver o id, aparecerá a exceção personalizada
+	return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 		
 	}
 	
